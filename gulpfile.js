@@ -51,7 +51,7 @@ const htmlHandler = () => {
 // 4.书写一个打包img文件的方法
 const imgHandler = ()=>{
     return gulp.src('./src/images/**') //**所有格式的图片
-               .pipe(gulp.dest('./dist/img'))
+               .pipe(gulp.dest('./dist/images'))
                
 }
 // 5.书写一个打包lib文件的方法
@@ -65,6 +65,13 @@ const libHandler = ()=>{
 const delHandler = () => {
     return del(['./dist'])
 }
+// 9.书写一个打包video文件的方法
+// 不压缩，直接转移
+const videoHandler = ()=>{
+    return gulp.src('./src/video/**') //**所有第三方工具
+               .pipe(gulp.dest('./dist/video'))
+               
+}
 
 // 7.书写一个配置服务器的任务（gulp-webserver)
 const serverHandler = ()=>{
@@ -75,10 +82,10 @@ const serverHandler = ()=>{
                      port:8080,//端口号
                      open:'./pages/index.html',//默认打开的首页
                      livereload:true,//自动刷新浏览器 
-                    //  proxies:[{
-                    //      source:'./dd',//代理标识符
-                    //      target:'http://127.0.0.1/test.php'//代理的地址
-                    //  }]
+                     proxies:[{
+                         source:'./dd',//代理标识符
+                         target:'http://127.0.0.1/login.php'//代理的地址
+                     }]
 
                    }
                ))//开启服务器
@@ -90,14 +97,10 @@ const watchHandler = ()=>{
     gulp.watch('./src/pages/*.html',htmlHandler)
     gulp.watch('./src/lib/**',libHandler)
     gulp.watch('./src/images/**',imgHandler)
+    gulp.watch('./src/video/**',videoHandler)
 }
-// 9.书写一个打包video文件的方法
-// 不压缩，直接转移
-const videoHandler = ()=>{
-    return gulp.src('./src/vedio/**') //**所有第三方工具
-               .pipe(gulp.dest('./dist/vedio'))
-               
-}
+
+
 // 导出一个默认任务
 module.exports.default =gulp.series(
     delHandler,
